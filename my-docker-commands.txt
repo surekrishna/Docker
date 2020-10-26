@@ -1,0 +1,91 @@
+sudo docker build -t discovery-service .
+sudo docker build -t gateway-service .
+sudo docker build -t auth-service .
+sudo docker-compose up
+sudo docker-compose ps
+sudo docker-compose down
+sudo docker-compose logs
+docker exec -it <mycontainer> bash
+
+pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+FROM node:6
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY package.json /usr/src/app
+RUN npm cache clean
+RUN npm install
+COPY . /usr/src/app
+EXPOSE 4200
+CMD ["npm","start"]
+
+
+
+version: "3.8"
+services:
+    discovery:
+        image: discovery-service
+        ports: ["1111:1111"]
+        network_mode: host
+    gateway:
+        image: gateway-service
+        ports: ["8081:8081"]
+        network_mode: host
+        depends_on:
+            - discovery
+    auth:
+        image: auth-service
+        ports: ["8093:8093"]
+        network_mode: host
+        depends_on:
+            - discovery
+            - gateway
+
+
+bubblesassurance-keycloak:
+    container_name: bubblesassurance-keycloak
+    image: jboss/keycloak
+    depends_on:
+      - bubblesassurance-postgres-keycloak
+    networks:
+      - bubblesassurance-network
+    environment:
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=bubblesassurance-postgres-keycloak
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=password
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+    ports:
+      - 8080:8080
+
+
+
+
+
+db:
+image: postgres:13
+restart: always
+environment:
+POSTGRES_DB: hrms
+POSTGRES_USER: hrms
+POSTGRES_PASSWORD: hrms
+PGDATA: /var/lib/postgresql/data
+volumes:
+- data:/var/lib/postgresql/data
+ports:
+- ["5432:5432"]
+
+
+- DB_VENDOR=POSTGRES
+      - DB_ADDR=bubblesassurance-postgres-keycloak
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=password
+ 
+
+
+- POSTGRES_PASSWORD=password
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak

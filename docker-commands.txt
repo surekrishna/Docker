@@ -1,0 +1,595 @@
+USECASE - 1
+=========
+
+#Step 1: Building an image
+#Syntax: docker build -t <image-name> <location of dockerfile>
+-------------------------------------------------------------------
+docker build -t my-httpd .
+
+#Step 2: List all the images
+#Syntax: docker images
+-------------------------------------------------------------------
+docker images
+
+#Step 3: Inspect the Image
+------------------------------------------------------------------
+docker inspect <image-id>
+
+#Step 4: Running a container from the image
+#Syntax: docker run -itd --name <container-name> -p <host-port>:<port in container> image-name:tag
+# note in the above syntax:
+# -d : represents (detached mode), note that if you dont run this in detached mode, the life of the container will be the life of the terminal in which you are executing it.
+# -p : represents the host-port to container-port mapping, if you substitute it with -P you will get a random port allocated by docker
+# --name : represents the name of the container 
+-------------------------------------------------------------------
+docker run -itd --name my-http-container-1 -p 5555:80 my-httpd:latest
+docker run -itd --name my-http-container-2 -p 5556:80 my-httpd:latest
+docker run -itd --name my-http-container-with-random-port -P my-httpd:latest
+
+#note if you run this it will NOT run in detached mode.
+docker run -it --name my-http-container-not-detached-mode -p 5557:80 my-httpd:latest
+
+Step 5: View all the containers
+-------------------------------------------------------------------
+# Shows all the containers which are running
+docker ps 
+
+#Shows all the containers stopped and running
+docker ps -a
+
+Step 6: Inspect the container and image
+-------------------------------------------------------------------
+docker inspect <container-id>
+
+Step 7: View Container logs
+-------------------------------------------------------------------
+
+# View the logs of the container
+docker logs <container-id>
+
+# Tail the logs of the container
+docker logs -ft <container-id>
+
+Step 8: Stop the container
+-------------------------------------------------------------------
+docker stop <container-id>
+
+Step 9: Stop the container
+-------------------------------------------------------------------
+docker start <container-id>
+
+Step 10: Logging into the container
+-------------------------------------------------------------------
+#Note: The container must be started before we can do this.
+docker exec -it <container-id> /bin/bash
+
+Step 11: Remove all the containers and images
+-------------------------------------------------------------------
+#Note: To remove an image the corresponding container built from that image will need to be removed.
+
+#Remove a specific container
+docker rm <container-id>
+
+#Remove all containers
+docker rm $(docker ps -a -q)
+
+# remove image (note: no containers for this image should be running)
+docker rmi <image-id>
+
+# remove all images
+docker rmi $(docker images -q)
+
+
+USECASE - 2
+=========
+
+#Step 1: Building an image
+#Syntax: docker build -t <image-name> <location of dockerfile>
+-------------------------------------------------------------------
+docker build -t my-nginx .
+
+#Step 2: List all the images
+#Syntax: docker images
+-------------------------------------------------------------------
+docker images
+
+#Step 3: Running a container from the image
+#Syntax: docker run -itd --name <container-name> -p <host-port>:<port in container> image-name:tag
+# note in the above syntax:
+# -d : represents (detached mode), note that if you dont run this in detached mode, the life of the container will be the life of the terminal in which you are executing it.
+# -p : represents the host-port to container-port mapping, if you substitute it with -P you will get a random port allocated by docker
+# --name : represents the name of the container 
+-------------------------------------------------------------------
+docker run -itd --name my-nginx-container-1 -p 7777:80 my-nginx:latest
+docker run -itd --name my-nginx-container-2 -p 7778:80 my-nginx:latest
+
+Step 4: View all the containers
+-------------------------------------------------------------------
+# Shows all the containers which are running
+docker ps 
+
+#Shows all the containers stopped and running
+docker ps -a
+
+Step 5: Logging into the container
+-------------------------------------------------------------------
+#Note: The container must be started before we can do this.
+docker exec -it <container-id> /bin/bash
+
+Step 6: Logging into Dockerhub account on the terminal
+-------------------------------------------------------------------
+docker login 
+docker tag <currentimage>:<tag> <repository-name>/<image-name>:<tag>
+docker push <repository-name>/<image-name>:<tag>
+docker commit <container-id> <repository-name>/<image-name>:<tag>
+
+docker pull <repository-name>/<image-name>:<tag>
+
+
+Step 11: Remove all the containers and images
+-------------------------------------------------------------------
+#Note: To remove an image the corresponding container built from that image will need to be removed.
+
+#Remove a specific container
+docker rm <container-id>
+
+#Remove all containers
+docker rm $(docker ps -a -q)
+
+# remove image (note: no containers for this image should be running)
+docker rmi <image-id>
+
+# remove all images
+docker rmi $(docker images -q)
+
+USECASE - 3
+=========
+#Build the image.
+docker build -t my-java-docker .
+
+
+#Run the image
+docker run -itd --name my-java-docker-container my-java-docker:latest
+
+# Review the logs to see how the container is running. You can get it by executing $docker ps -a
+docker logs -ft <container-id>
+
+USECASE - 4
+=========
+#Step 1: Building an image
+#Syntax: docker build -t <image-name> <location of dockerfile>
+-------------------------------------------------------------------
+docker build -t spring-mvc-image .
+
+#Step 2: List all the images
+#Syntax: docker images
+-------------------------------------------------------------------
+docker images
+
+#Step 3: Running a container from the image
+#Syntax: docker run -itd --name <container-name> -p <host-port>:<port in container> image-name:tag
+# note in the above syntax:
+# -d : represents (detached mode), note that if you dont run this in detached mode, the life of the container will be the life of the terminal in which you are executing it.
+# -p : represents the host-port to container-port mapping, if you substitute it with -P you will get a random port allocated by docker
+# --name : represents the name of the container 
+-------------------------------------------------------------------
+docker run -itd --name spring-mvc-container-1 -p 5555:8080 spring-mvc-image:latest
+docker run -itd --name spring-mvc-container-2 -p 5556:8080 spring-mvc-image:latest
+
+Step 4: View all the containers
+-------------------------------------------------------------------
+# Shows all the containers which are running
+docker ps 
+
+#Shows all the containers stopped and running
+docker ps -a
+
+
+Step 5: Logging into the container
+-------------------------------------------------------------------
+#Note: The container must be started before we can do this.
+docker exec -it <container-id> /bin/bash
+
+Step 6: Remove all the containers and images
+-------------------------------------------------------------------
+#Note: To remove an image the corresponding container built from that image will need to be removed.
+
+#Remove a specific container
+docker rm <container-id>
+
+#Remove all containers
+docker rm $(docker ps -a -q)
+
+# remove image (note: no containers for this image should be running)
+docker rmi <image-id>
+
+# remove all images
+docker rmi $(docker images -q)
+
+USECASE - 5
+=========
+#Step 1: Building an image
+#Syntax: docker build -t <image-name> <location of dockerfile>
+-------------------------------------------------------------------
+docker build -t tomcat7-jdk7-image .
+
+#Step 2: List all the images
+#Syntax: docker images
+-------------------------------------------------------------------
+docker images
+
+Step 3: Create a repository on github for tomcat-7-jdk7
+-------------------------------------------------------------------
+
+Step 4: Verify image creation and push it into Docker Hub 
+# In my case i did 
+# docker login
+# docker tag tomcat7-jdk7-image:latest pictolearn/tomcat7-jdk7:latest
+# docker push pictolearn/tomcat7-jdk7:latest
+
+-------------------------------------------------------------------
+docker login 
+docker tag <currentimage>:<tag> <repository-name>/<image-name>:<tag>
+docker push <repository-name>/<image-name>:<tag>
+
+#Step 1: Building an image
+#Syntax: docker build -t <image-name> <location of dockerfile>
+-------------------------------------------------------------------
+docker build -t tomcat8-jdk8-image .
+
+#Step 2: List all the images
+#Syntax: docker images
+-------------------------------------------------------------------
+docker images
+
+Step 3: Create a repository on github for tomcat-8-jdk8
+-------------------------------------------------------------------
+
+Step 4: Verify image creation and push it into Docker Hub
+# In my case i did 
+# docker login
+# docker tag tomcat8-jdk8-image:latest pictolearn/tomcat8-jdk8:latest
+# docker push pictolearn/tomcat8-jdk8:latest
+
+-------------------------------------------------------------------
+docker login 
+docker tag <currentimage>:<tag> <repository-name>/<image-name>:<tag>
+docker push <repository-name>/<image-name>:<tag>
+
+USECASE - 6
+=========
+Step 1: Remove the existing pictolearn/tomcat7-jdk7 and pictolearn/tomcat8-jdk8 images
+-------------------------------------------------------------------
+docker rmi pictolearn/tomcat7-jdk7
+docker rmi pictolearn/tomcat8-jdk8
+
+#Step 2: Building an image
+#Syntax: docker build -t <image-name> <location of dockerfile>
+-------------------------------------------------------------------
+docker build -t spring-mvc-tomcat7-jdk7-image .
+docker build -t spring-mvc-tomcat8-jdk8-image .
+
+
+#Step 3: Run a container from the image
+#Syntax: docker run -itd --name <container-name> -p <host-port>:<container-port> <image-name>
+---------------------------------------------------------------------------------------------
+docker run -itd --name tomcat7-jdk7-container-1 -p 5555:8080 spring-mvc-tomcat7-jdk7-image
+docker run -itd --name tomcat8-jdk8-container-2 -p 5556:8080 spring-mvc-tomcat8-jdk8-image
+
+USECASE - 7
+=========
+#Step 1: Building an image
+#Syntax: docker build -t <image-name> <location of dockerfile>
+-------------------------------------------------------------------
+docker build -t spring-mvc-tomcat7-jdk7-volume-sample .
+
+#Step 2: List all the images
+#Syntax: docker images
+-------------------------------------------------------------------
+docker images
+
+
+#Step 3: Run a container from the image with a volume mount
+#Container volume is the logs directory for example or war directory
+Example:  docker run -itd  -p <host-port>:<container-port> -v <host-volume-absolute-path>:<container-volume-path>  --name=<container-name> <image-id>
+---------------------------------------------------------------------------------------------
+docker run -itd  -p 3333:8080  -v F:/pictolearn/Docker/logs:/opt/tomcat/logs -v F:/pictolearn/Docker/webapps:/opt/tomcat/webapps  --name="tomcat-container-log" spring-mvc-tomcat7-jdk7-volume-sample
+
+
+USECASE - 8
+=========
+*****************************************************************
+Docker - machine: Windows and MAC
+*****************************************************************
+
+#Create 2 Docker machines (Remember both are virtual PCs running with different IPs)
+------------------------------------------------------------------------
+
+Windows: docker-machine create -d hyperv --hyperv-virtual-switch "vs-1" hyperv-vm-1
+MAC: docker-machine create --driver virtualbox --virtualbox-disk-size "20000" hyperv-vm-1
+
+Windows: docker-machine create -d hyperv --hyperv-virtual-switch "vs-1" hyperv-vm-2
+MAC: docker-machine create --driver virtualbox --virtualbox-disk-size "20000" hyperv-vm-2
+
+#Verify if docker-machine is running on an IP
+------------------------------------------------------------------------
+docker-machine ip hyperv-vm-1
+docker-machine ip hyperv-vm-2
+
+#Run the following command and whatever output you get run it again
+------------------------------------------------------------------------
+docker-machine env hyperv-vm-1
+docker-machine env hyperv-vm-2
+
+#Run the output of the last line of the command which is there before.
+------------------------------------------------------------------------
+ & "C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe" env hyperv-vm-1 | Invoke-Expression
+ & "C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe" env hyperv-vm-2 | Invoke-Expression
+
+#Verify the docker-machine is active.
+----------------------------------------
+docker-machine ls
+
+Turning OFF and ON docker-machine
+-------------------------------------
+docker-machine stop hyperv-vm-1
+docker-machine stop hyperv-vm-2
+docker-machine start hyperv-vm-1
+docker-machine start hyperv-vm-2
+
+Remove docker-machine (Turn off docker-machine on hyper-v manager for windows before executing this command, for MAC no extra steps are required)
+docker-machine rm -f <name-of-machine>
+
+*****************************************************************
+Docker - compose commands to follow (Common for MAC and Windows)
+Manual Reference: https://docs.docker.com/compose/reference/
+*****************************************************************
+Step-1 # Builds the image
+-------------------------------------------------------------------
+docker-compose build
+
+#Build a specific image
+docker-compose build <service-name>
+
+#Builds and run the containers
+docker-compose up --build -d
+
+Step-2 # View the image (All started and stopped containers)
+-------------------------------------------------------------------
+docker-compose ps 
+
+
+Step-3 # Run the image in detached/non-detached mode (use -d) 
+-------------------------------------------------------------------
+docker-compose up -d
+docker-compose up
+docker-compose up -d <service-name>
+
+
+Step-4 # View logs and Tail logs
+-------------------------------------------------------------------
+# View logs
+docker-compose logs <service-name>
+
+# Tail logs
+docker-compose  logs -ft <service-name>
+
+Step-5 # Login to the container
+-------------------------------------------------------------------
+docker-compose run <service-name> /bin/bash 
+
+Step-6 # Stops all containers related to the compose file
+--------------------------------------------------
+docker-compose stop
+
+#Stop and start specific container
+docker-compose stop <service-name>
+
+#Stop and remove containers
+docker-compose down
+
+USECASE - 9
+=========
+*****************************************************************
+Docker - compose commands to follow (Common for MAC and Windows)
+Manual Reference: https://docs.docker.com/compose/reference/
+*****************************************************************
+Step-1 # Builds the image
+-------------------------------------------------------------------
+docker-compose build
+
+#Build a specific image
+docker-compose build <service-name>
+
+#Builds and run the containers
+docker-compose up --build -d
+
+Step-2 # Run the image in detached/non-detached mode (use -d) 
+-------------------------------------------------------------------
+docker-compose up -d
+docker-compose up
+docker-compose up -d <service-name>
+
+Step-3 # View the image (All started and stopped containers)
+-------------------------------------------------------------------
+docker-compose ps 
+
+Step-4 # View logs and Tail logs
+-------------------------------------------------------------------
+# View logs
+docker-compose logs <service-name>
+
+# Tail logs
+docker-compose  logs -ft <service-name>
+
+Step-5 # Login to the container
+-------------------------------------------------------------------
+docker-compose run <service-name> /bin/bash 
+
+Step-6 # Stops all containers related to the compose file
+-------------------------------------------------------------------
+Use a RESTFul Client to test the APIs
+
+Step-7 # Stops all containers related to the compose file
+--------------------------------------------------
+docker-compose stop
+
+#Stop and start specific container
+docker-compose stop <service-name>
+
+#Stop and remove containers
+docker-compose down
+
+RESOURCES
+==========
+# Build an image
+docker build -t <image-name> <location-of-Dockerfile>
+
+# run an image or run a container directly from a specific image
+docker run -it -d -p<host-port>:<container-port> --name <container-name> <image-name>:tag
+
+-i (interactive)
+-t (TTY)
+-d (Detached) : Run it in detached mode or else the life time of the container will be only as long as you run the terminal.
+-P : Docker assigned default ports which will access the required port in the container (meaning the host machine can get assigned 32769 : pointing to default port of the image)
+--name : represents a default name, if it is not specified the docker daemon will allocate a unique name
+image-name : specifies the image to download from the repostory
+tag : defaults to latest, a version for the given image can be specified.
+        
+
+# allows you to view the logs in the container
+docker logs <container-id>
+
+# Allow you to tail logs
+docker logs -ft <container-id>
+
+# List all containers running and stopped
+docker ps -a
+
+# List all containers running
+docker ps
+
+# List all images available
+docker images
+
+# stop a specified container
+docker stop <container-id>
+
+# stop all containers
+docker stop $(docker ps -a -q)
+
+# remove image (note: no containers for this image should be running)
+docker rmi <image-id>
+
+# remove all images
+docker rmi $(docker images -a)
+
+#Remove a specific container
+docker rm <container-id>
+
+#Remove all containers
+docker rm $(docker ps -a -q)
+
+# log in to the shell of the container. Typically entry-point refers to /bin/bash
+docker exec -it <container-name> <entry-point>
+
+
+docker login 
+docker tag <currentimage>:<tag> <repository-name>/<image-name>:<tag>
+docker commit <container-id> <repository-name>/<image-name>:<tag>
+docker push <repository-name>/<image-name>:<tag>
+docker inspect <container-name>
+docker inspect <image-name>
+
+
+#Container volume is the logs directory for example or war directory
+docker run -itd -P -v <host-volume-absolute-path>:<container-volume-path>  <container-name>
+
+
+#docker-machine commands
+docker-machine version
+
+#Version of docker-machine
+docker-machine ls
+
+#Create a docker-machine
+docker-machine create --driver virtualbox --virtualbox-disk-size "20000" <machine-name> 
+docker-machine create --driver hyperv  <machine-name>
+docker-machine create -d hyperv --hyperv-virtual-switch "<NameOfVirtualSwitch>" <nameOfNode> 
+
+#docker-machine ip default provides the ip of the name of machine "default"
+docker-machine ip default
+
+# Telling docker to talk to the new machine
+docker-machine env default
+
+#Stop docker-machine
+docker-machine stop default
+
+#Start docker-machine
+docker-machine start default
+
+# Removing a docker machine
+docker-machine rm <machine-name>
+
+#remove all docker machines
+docker-machine rm -f $(docker-machine ls -q);
+
+# Runs the container
+docker-compose up
+
+# Runs in detached mode
+docker-compose up -d
+
+# Builds the image
+docker-compose build
+
+#Stops the container
+docker-compose stop <service-name>
+
+#Starts the container
+docker-compose start <service-name>
+
+# Equivalent to docker exec
+docker-compose run <service-name> /bin/bash 
+
+# Build a specific image.
+docker-compose up --build
+
+# View logs
+docker-compose logs <service-name>
+
+# Tail logs
+docker-compose  logs -ft <service-name>
+
+# Update specific container
+docker-compose up -d --no-deps <service-name>
+
+# Stop all containers
+docker-compose down
+
+#Remove errored out images
+docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+
+
+#Shut down containers, remove all images and rebuild images with docker-compose
+docker-compose down
+docker-compose rm -f
+docker-compose pull
+docker-compose up --build -d
+
+# How to find the disk space used by docker
+docker system df
+du -sch /var/lib/docker/containers
+du -c /var/lib/docker/ | head -15 | sort -rn
+
+# cleaning up old containers and images from docker and release resources
+docker rm $(docker ps -qa --no-trunc --filter "status=exited")
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+docker rmi $(docker images | grep "none" | awk '/ / { print $3 }')
+docker volume rm $(docker volume ls -qf dangling=true)
+docker volume ls -qf dangling=true | xargs -r docker volume rm
+docker network rm $(docker network ls | grep "bridge" | awk '/ / { print $1 }')
+docker network prune
+docker system prune
+docker system prune -af
